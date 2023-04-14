@@ -1,7 +1,7 @@
 clc
 clear
 
-syms gamma d0 nu n rho 
+syms gamma d0 n rho 
 syms pos_obj [3 1]
 syms x [6 1]
 syms x_target [6 1]
@@ -32,6 +32,8 @@ i = x(3);
 RAAN = x(4);
 w = x(5);
 M = x(6);
+
+nu = M; %%% BIG ASSUMPTION!!!!!
 
 p = a*(1-e^2);
 
@@ -69,6 +71,6 @@ lambda_dot = -gradient(H,x1);
 % Optimal Control 
 u_star = -R^(-1)*B.'*lambda;
 
-%matlabFunction(lambda_dot,'File','lambda_dot_1body');
+matlabFunction(lambda_dot,'File','lambda_dot_1body');
 matlabFunction(x_dot,'File','x_dot_1body'); 
-%matlabFunction(u_star,'File','u_star_1body'); 
+matlabFunction(u_star,'File','u_star_1body'); 
