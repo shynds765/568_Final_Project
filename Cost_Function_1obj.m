@@ -70,5 +70,5 @@ lambda_dot = -gradient(H,x1);
 u_star = -R^(-1)*B.'*lambda;
 
 %matlabFunction(lambda_dot,'File','lambda_dot_1body');
-%matlabFunction(lambda_dot,'File','x_dot_1body'); 
+matlabFunction(x_dot,'File','x_dot_1body'); 
 %matlabFunction(u_star,'File','u_star_1body'); 
