@@ -49,7 +49,7 @@ r_c = norm(pos_obj-pos_sc); % Distance between spacecrafts
 % Cost function
 Pc = gamma/2*(1-tanh((r_c-d0)/rho)); % Exclusion Cost
 Pp = deltax.' * Q * deltax; % Tracking Cost
-L = u.' * R * u + Pc + Pp;
+L = .5 * (u.' * R * u + Pp) + Pc;
 
 % Dynamics
 r = norm(pos_sc);
@@ -71,6 +71,7 @@ lambda_dot = -gradient(H,x1);
 
 % Optimal Control 
 u_star = -R^(-1)*B.'*lambda;
+% u_star = (0.5 * -lambda.' * B * R^(-1)).';
 
 matlabFunction(lambda_dot,'File','lambda_dot_1body');
 matlabFunction(x_dot,'File','x_dot_1body'); 
