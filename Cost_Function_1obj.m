@@ -41,7 +41,8 @@ r = p/(1+e*cos(nu));
 pos_sc = [r*cos(nu);
           r*sin(nu);
           0];  % Positision in 2d
-pos_sc = (R3(w)*R1(i)*R3(RAAN)).' * pos_sc; % 3d position
+% pos_sc = (R3(w)*R1(i)*R3(RAAN)).' * pos_sc; % 3d position
+pos_sc = R3(-RAAN)*R1(-i)*R3(-w) * pos_sc;
 
 r_c = norm(pos_obj-pos_sc); % Distance between spacecrafts
 
