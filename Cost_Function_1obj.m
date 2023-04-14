@@ -41,8 +41,8 @@ r = p/(1+e*cos(nu));
 pos_sc = [r*cos(nu);
           r*sin(nu);
           0];  % Positision in 2d
-% pos_sc = (R3(w)*R1(i)*R3(RAAN)).' * pos_sc; % 3d position
-pos_sc = R3(-RAAN)*R1(-i)*R3(-w) * pos_sc;
+pos_sc = (R3(w)*R1(i)*R3(RAAN)).' * pos_sc; % 3d position
+% pos_sc = R3(-RAAN)*R1(-i)*R3(-w) * pos_sc; % Testing difference
 
 r_c = norm(pos_obj-pos_sc); % Distance between spacecrafts
 
@@ -71,7 +71,6 @@ lambda_dot = -gradient(H,x1);
 
 % Optimal Control 
 u_star = -R^(-1)*B.'*lambda;
-% u_star = (0.5 * -lambda.' * B * R^(-1)).';
 
 matlabFunction(lambda_dot,'File','lambda_dot_1body');
 matlabFunction(x_dot,'File','x_dot_1body'); 

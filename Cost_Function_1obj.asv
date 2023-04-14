@@ -1,7 +1,7 @@
 clc
 clear
 
-syms gamma d0 nu n rho 
+syms gamma d0 n rho 
 syms pos_obj [3 1]
 syms x [6 1]
 syms x_target [6 1]
@@ -33,6 +33,8 @@ RAAN = x(4);
 w = x(5);
 M = x(6);
 
+nu = M; %%% BIG ASSUMPTION!!!!!
+
 p = a*(1-e^2);
 
 r = p/(1+e*cos(nu));
@@ -40,13 +42,14 @@ pos_sc = [r*cos(nu);
           r*sin(nu);
           0];  % Positision in 2d
 pos_sc = (R3(w)*R1(i)*R3(RAAN)).' * pos_sc; % 3d position
+% pos_sc = R3(-RAAN)*R1(-i)*R3(-w) * pos_sc; % Testing difference
 
 r_c = norm(pos_obj-pos_sc); % Distance between spacecrafts
 
 % Cost function
 Pc = gamma/2*(1-tanh((r_c-d0)/rho)); % Exclusion Cost
 Pp = deltax.' * Q * deltax; % Tracking Cost
-L = u.' * R * u + Pc + Pp;
+L = .5 * (u.' * R * u + Pp) + Pc;
 
 % Dynamics
 r = norm(pos_sc);
@@ -67,7 +70,8 @@ H = L + lambda.' * x_dot;
 lambda_dot = -gradient(H,x1);
 
 % Optimal Control 
+u_star = -R^(-1)*B.'*lambda;
 
-
-%matlabFunction(lambda_dot,'File','lambda_dot_1body');
-%matlabFunction(lambda_dot,'File','x_dot_1body'); 
+matlabFunction(lambda_dot,'File','lambda_dot_1body');
+matlabFunction(x_dot,'File','x_dot_1body'); 
+matlabFunction(u_star,'File','u_star_1body'); 
