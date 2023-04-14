@@ -56,13 +56,13 @@ B1 = (1/h1) * [2*a1^2*e1*sin(nu) 2*a1^2*p1/r1 0
     0 0 r1*cos(nu + omega1)
     0 0 (r1*sin(nu + omega1))/(sin(i1))
     -p1*cos(nu)/e1 (p1+r1)*sin(nu)/e1 -r1*sin(nu+omega1)/tan(i1)
-    (b1*p1*cos(nu)/(a1*e1))-(2*b1*r1/a1) -b1*(p1+r1)*sin(nu)/(a1*e1) 0]; % still need 1/h
+    (b1*p1*cos(nu)/(a1*e1))-(2*b1*r1/a1) -b1*(p1+r1)*sin(nu)/(a1*e1) 0];
 B2 = (1/h2) * [2*a2^2*e2*sin(nu) 2*a2^2*p2/r2 0
     p2*sin(nu) (p2+r2)*cos(nu)+r2*e2 0
     0 0 r2*cos(nu + omega2)
     0 0 (r2*sin(nu + omega2))/(sin(i2))
     -p2*cos(nu)/e2 (p2+r2)*sin(nu)/e2 -r2*sin(nu+omega2)/tan(i2)
-    (b2*p2*cos(nu)/(a2*e2))-(2*b2*r2/a2) -b2*(p2+r2)*sin(nu)/(a2*e2) 0]; % still need 1/h
+    (b2*p2*cos(nu)/(a2*e2))-(2*b2*r2/a2) -b2*(p2+r2)*sin(nu)/(a2*e2) 0];
 B = blkdiag(B1,B2);
 x_dot = [zeros(5,1); n1; zeros(5,1); n2] + B*u;
 
