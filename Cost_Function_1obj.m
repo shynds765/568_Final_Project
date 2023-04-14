@@ -67,7 +67,7 @@ x_dot = [zeros(5,1); n] + B*u;
 H = L + lambda.' * x_dot;
 
 % Costate Dynamics
-lambda_dot = -gradient(H,x1);
+lambda_dot = -gradient(H,x);
 
 % Optimal Control 
 u_star = -R^(-1)*B.'*lambda;
