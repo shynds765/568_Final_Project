@@ -3,7 +3,7 @@ function Psi = boundaryValueFun(lamda0,Tf,X0,mu,debris_sol)
     Xug0 = [X0;lamda0];
 
     Q = eye(6);
-    Q(6,6) = 0; % Cost of M is 0 (it should be time-varying for an orbit)
+    Q(6,6) = 0.01; % Cost of M is 0 (it should be time-varying for an orbit)
 
     R = eye(3);
 
