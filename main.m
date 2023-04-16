@@ -18,13 +18,13 @@ R = diag(eye(3));
 
 d0 = 10/l_char; % km
 
-% System Parameters 
+% Collision Cost
 gamma = 1;
 rho = 1;
 
 %% Calc Asteroid and Reference Solution
 v_c = sqrt(mu_earth/l_char);
-v_c_nondim = v_c/(l_char/t_char);
+v_c_nondim = v_c / (l_char/t_char);
 
 X_debris0 = [-1;0;0;0;v_c_nondim;0];
 debris_sol = ode45(@(t,x) TwoBodyEOM(t,x,mu), [0,Tf], X_debris0, options_ode);
