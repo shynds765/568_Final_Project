@@ -1,4 +1,4 @@
-function Xaugdot = augEOM(t,Xaug,x_target,R,Q,d0,gamma,rho,asteroid_hist)
+function Xaugdot = augEOM(t,Xaug,x_target,R,Q,d0,gamma,rho,mu,debris_sol)
     x = Xaug(1:6);
     lambda = Xaug(7:12);
 
@@ -6,11 +6,10 @@ function Xaugdot = augEOM(t,Xaug,x_target,R,Q,d0,gamma,rho,asteroid_hist)
     u = u_star_1body(R(1,1),R(2,2),R(3,3),lambda(1),lambda(2),lambda(3),...
         lambda(4),lambda(5),lambda(6),x(1),x(2),x(3),x(4),x(5),x(6));
     
-    % Calculate Position of Asteroid (in cartesian)
-    X_ast = deval(asteroid_hist,t);
+    % Calculate Position of Debris (in cartesian)
+    X_ast = deval(debris_sol,t);
     pos_obj = X_ast(1:3);
 
-    mu = 3.9860e5;
     n = sqrt(mu/x(1)^3);
 
     % State and costate dynamics

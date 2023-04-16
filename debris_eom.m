@@ -1,4 +1,4 @@
-function x_dot = debris_eom(x,MU)
+function x_dot = debris_eom(t,x,MU)
 r = x(1:3);
 v = x(4:6);
 
