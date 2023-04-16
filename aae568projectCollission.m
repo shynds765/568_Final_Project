@@ -4,7 +4,7 @@
 clear all
 close all
 
-% Propogating orbit of satellite and rock
+% Propogating orbit of satellite and obstacle
 a = 6786230; % [m] semi-major axis ~ 400km orbit 
 ecc = 0; % eccentricity (deviation of curve from circular)
 incl_sat1 = 0; % [deg] inclination of orbit (alternate between 0,180)
@@ -20,11 +20,15 @@ lon1 = 0:0.5:180; % [deg] angle between periapsis and current position
 lon2 = 180:-0.5:0;
 r_sat1 = zeros(3,181);
 r_sat2 = r_sat1; 
+v_sat1 = r_sat1;
+v_sat2 = r_sat1;
 for i = 1:size(lon1,2)
     [r_ijk, v_ijk] = keplerian2ijk(a, ecc, incl_sat1, RAAN, argp, nu, 'truelon',lon1(i)); % returns 3x1,3x1
     r_sat1(:,i) = r_ijk;
+    v_sat1(:,i) = v_ijk;
     [r_ijk, v_ijk] = keplerian2ijk(a, ecc, incl_sat2, RAAN, argp, nu, 'truelon',lon2(i)); % returns 3x1,3x1
     r_sat2(:,i) = r_ijk;
+    v_sat2(:,i) = v_ijk;
 end
 
 figure(1)
@@ -40,6 +44,45 @@ ylabel('y-direction [m]')
 zlabel('z-direction [m]')
 legend('Orbit1','Start1','Orbit2','Start2')
 view(45,45)
+hold off
+
+figure(5)
+subplot(2,2,1)
+hold on 
+grid on
+plot(v_sat1(1,1:50),v_sat1(2,1:50), 'r');
+title('Velocity Satellite | Brady Beck')
+xlabel('x-direction [m]')
+ylabel('y-direction [m]')
+hold off
+
+subplot(2,2,2)
+hold on 
+grid on
+plot(v_sat2(1,1:50),v_sat2(2,1:50), 'k--');
+title('Velocity Obstacle | Brady Beck')
+xlabel('x-direction [m]')
+ylabel('y-direction [m]')
+hold off
+
+subplot(2,2,3)
+hold on 
+grid on
+plot(r_sat1(1,1:50),r_sat1(2,1:50), 'r');
+title('Position Satellite | Brady Beck')
+xlabel('x-direction [m]')
+ylabel('y-direction [m]')
+axis equal
+hold off
+
+subplot(2,2,4)
+hold on 
+grid on
+plot(r_sat2(1,1:50),r_sat2(2,1:50), 'k--');
+title('Position Obstacle | Brady Beck')
+xlabel('x-direction [m]')
+ylabel('y-direction [m]')
+axis equal
 hold off
 
 % Plotting relative vector between spacecraft and rock wtih exclusion zone
@@ -125,3 +168,9 @@ view(45,15)
 axis equal
 ylim([-20000 20000])
 hold off
+
+% Finding Period 
+G = 6.6743e-11; % [m^3/kg*s^2] grav const
+mEarth = 5.9722e24; % [kg] 
+time = 2*pi*sqrt(a^3/(G*mEarth));
+imapctTime = time/4;
