@@ -28,8 +28,10 @@ R = diag(eye(3));
 d0 = 100/l_char; % km
 
 % Collision Cost
-gamma = linspace(0.1,2,7);
-rho = [1,1E-2,1E-3];
+% gamma = linspace(0.1,2,7);
+% rho = [1,1E-2,1E-3];
+gamma = 1;
+rho = 1;
 
 %% Calc Asteroid and Reference Solution
 debris_sol = ode45(@(t,x) TwoBodyEOM(t,x,mu), [0,Tf], X_debris0, options_ode);
@@ -48,6 +50,13 @@ lambda0 = lambda0_guess;
 [t,X_sc] = ode45(@(t,X) augEOM(t,X,Q,R,debris_sol,ref_sol,mu,d0,gamma(end),rho(end)), [0,Tf], [X_sc0;lambda0], options_ode);
 r_sc = X_sc(:,1:3);
 
+% Find optimal control history
+u = zeros(3,length(X_sc));
+for i = 1:length(u)
+    u(:,i) = u_star(R(1),R(2),R(3),X_sc(i,10),X_sc(i,11),X_sc(i,12))...
+        * (l_char/t_char^2);
+end
+
 X_debris = deval(debris_sol,t).';
 r_debris = X_debris(:,1:3);
 
@@ -62,7 +71,15 @@ X_ex = d0*X_ex;
 Y_ex = d0*Y_ex;
 Z_ex = d0*Z_ex;
 
+% Distance from Reference Trajectory
+error = zeros(1,length(r_sc));
+for i = 1:length(error)
+    error(i) = norm(r_sc(i,:) - r_ref)*l_char;
+end
+
 figure(1)
+plot3(0,0,0)
+hold on
 plot3(r_debris(:,1),r_debris(:,2),r_debris(:,3),'r-')
 hold on
 plot3(r_ref(:,1),r_ref(:,2),r_ref(:,3),'k--')
@@ -92,4 +109,36 @@ ylim(2*[-d0,d0])
 zlim(2*[-d0,d0])
 
 figure(4)
-penalty = gamma(end)/2*(1-tanh((r-d0)/rho(end)));
+penalty = gamma(end)/2*(1-tanh((dist-d0)/rho(end)));
+plot(t,penalty)
+xlabel('Time')
+ylabel('Penalty')
+
+% Optimal Control History
+t = t*t_char;
+figure(5)
+subplot(3,1,1)
+plot(t,u(1,:))
+title("Optimal Control History")
+ylabel("x Acceleration [km/s^2]")
+xlabel("Time [s]")
+grid
+
+subplot(3,1,2)
+plot(t,u(2,:))
+ylabel("y Acceleration [km/s^2]")
+xlabel("Time [s]")
+grid
+
+subplot(3,1,3)
+plot(t,u(3,:))
+ylabel("z Acceleration [km/s^2]")
+xlabel("Time [s]")
+grid
+
+figure(6)
+plot(t,error)
+title("Deviation from Reference Trajectory")
+ylabel("Distance from Reference Trajectory [km]")
+xlabel("Time [s]")
+grid
