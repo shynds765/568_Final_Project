@@ -35,6 +35,17 @@ R_3 = @(a) [cos(a) sin(a) 0
             -sin(a) cos(a) 0
             0 0 1];
 
+
+switch scenario
+    case 0
+    case 1 % equatorial satellite and equatorial obstacle in opposite directions
+    case 2 % equatoral satellite and polar obstacle
+    case 3 % equatorial satellite, inclined obstacle
+    case 4 % equatorial satellite, highly elliptical obstacle
+    case 5 % both elliptical
+
+
+
 vinit = (R_3(w)*R_1(i)*R_3(RAAN)).' * vinit;
 x0 = [rinit(1) rinit(2) rinit(3) vinit(1) vinit(2) vinit(3)];
 xComet0 = [rinit(1) rinit(2) rinit(3) vCometinit(1) vCometinit(2) vCometinit(3)];
