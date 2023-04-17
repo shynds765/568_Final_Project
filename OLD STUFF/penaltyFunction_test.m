@@ -13,7 +13,7 @@ for i = 1:length(r)
     end
 end
 
-rho = 1E-3;
+rho = 1;
 penalty_smooth = gamma/2*(1-tanh((r-d)/rho));
 
 figure(1)
