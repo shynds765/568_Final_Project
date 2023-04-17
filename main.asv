@@ -63,8 +63,6 @@ Y_ex = d0*Y_ex;
 Z_ex = d0*Z_ex;
 
 figure(1)
-plot3(0,0,0)
-hold on
 plot3(r_debris(:,1),r_debris(:,2),r_debris(:,3),'r-')
 hold on
 plot3(r_ref(:,1),r_ref(:,2),r_ref(:,3),'k--')
@@ -94,7 +92,4 @@ ylim(2*[-d0,d0])
 zlim(2*[-d0,d0])
 
 figure(4)
-penalty = gamma(end)/2*(1-tanh((dist-d0)/rho(end)));
-plot(t,penalty)
-xlabel('Time')
-ylabel('Penalty')
+penalty = gamma(end)/2*(1-tanh((r-d0)/rho(end)));
