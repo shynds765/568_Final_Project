@@ -108,7 +108,7 @@ hold on
 grid on 
 xlabel('time [s]')
 ylabel('Distance from Satellite [km]')
-yline(d0,'r--')
+yline(d0*l_char,'r--')
 
 figure(3)
 plot3(0,0,0,'kx')
