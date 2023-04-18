@@ -77,6 +77,9 @@ for i = 1:length(error)
     error(i) = norm(r_sc(i,:) - r_ref(i,:))*l_char;
 end
 
+% Calculating Total Cost from Cost Function Equation
+J = costSum(X_ref-X_sc(:,1:6),Q,u,R,Tf);
+
 figure(1)
 plot3(0,0,0)
 hold on
