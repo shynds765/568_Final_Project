@@ -1,4 +1,5 @@
 clear
+close all
 
 options_fsolve = optimset('TolFun',1e-8,'TolX',1e-8,'Display','on');
 options_ode = odeset('RelTol', 1.0e-12, 'AbsTol', 1.0e-12);
@@ -7,6 +8,7 @@ options_ode = odeset('RelTol', 1.0e-12, 'AbsTol', 1.0e-12);
 X_debris0 = [1506.88668453313    -11970.5727709491    0    5.37695239639678    6.09571043302428    0].';
 X_sc0 = [8510.26572496165    -4584.34548703186    -4990.17150276150    1.29804726770103    2.42612075903804    2.64089142239763].';
 Tf = 1390.89418662779;
+Tf = 1390.89418662779 * 1.2;
 
 % Characteristic Values
 mu_earth = 3.9860e5;
@@ -24,13 +26,15 @@ Tf = Tf/t_char;
 
 %% Control Variables
 Q = 1*diag(eye(6));
-R = diag(eye(3));
 d0 = 100/l_char; % km
+R = 1*diag(eye(3));
+d0 = 25/l_char; % km
 
 % Collision Cost
 % gamma = linspace(0.1,2,7);
 % rho = [1,1E-2,1E-3];
 gamma = 1;
+gamma = 10;
 rho = 1;
 
 %% Calc Asteroid and Reference Solution
@@ -79,7 +83,7 @@ end
 
 % Calculating Total Cost from Cost Function Equation
 penalty = gamma(end)/2*(1-tanh((dist-d0)/rho(end)));
-J = costSum(X_ref-X_sc(:,1:6),Q,u,R,penalty,Tf);
+J = costSum(X_ref-X_sc(:,1:6),Q,u,R,penalty,t);
 fprintf('\n-=- Total Cost via Augmented Cost Function -=-\n');
 fprintf('Cost with Penalty: %d \n', J(1));
 fprintf('Cost without Penalty: %d \n\n', J(2));
@@ -102,6 +106,9 @@ zlabel('z')
 figure(2)
 semilogy(t,dist,'k-')
 hold on
+grid on 
+xlabel('time [s]')
+ylabel('Distance from Satellite [km]')
 yline(d0,'r--')
 
 figure(3)
