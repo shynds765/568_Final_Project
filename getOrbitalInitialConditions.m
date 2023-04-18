@@ -1,9 +1,9 @@
-function [r0_sat, v0_sat, r0_deb, v0_deb, var, var2] = getOrbitalInitialConditions(scenario, wDebris, iDebris, RAANDebris, aDebris, wSat, iSat, RAANSat, aSat)
+function [r0_sat, v0_sat, r0_deb, v0_deb, crashT] = getOrbitalInitialConditions(scenario, wDebris, iDebris, RAANDebris, aDebris, wSat, iSat, RAANSat, aSat)
 % Example execution for sample cases 1-5: 
-% getOrbitalInitialConditions(1)
+% [r0_sat, v0_sat, r0_deb, v0_deb, crashT] = getOrbitalInitialConditions(1)
 
 % Example execution for user defined case:
-% getOrbitalInitialConditions(0, deg2rad(125), deg2rad(92), deg2rad(150), 6786230*100, deg2rad(30), deg2rad(40), deg2rad(15), 6786230*4)
+% [r0_sat, v0_sat, r0_deb, v0_deb, crashT] = getOrbitalInitialConditions(0, deg2rad(125), deg2rad(92), deg2rad(150), 6786230*100, deg2rad(30), deg2rad(40), deg2rad(15), 6786230*4)
 
 if ~exist('wSat','var')
     wSat = 125*pi/180;
@@ -113,6 +113,7 @@ r0_sat = var(length(var),1:3);
 v0_sat = var(length(var),4:6);
 r0_deb = var2(length(var2),1:3);
 v0_deb = var2(length(var2),4:6);
+crashT = -tf;
 
 figure(1)
 hold on
