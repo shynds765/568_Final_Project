@@ -78,7 +78,12 @@ for i = 1:length(error)
 end
 
 % Calculating Total Cost from Cost Function Equation
-J = costSum(X_ref-X_sc(:,1:6),Q,u,R,Tf);
+penalty = gamma(end)/2*(1-tanh((dist-d0)/rho(end)));
+J = costSum(X_ref-X_sc(:,1:6),Q,u,R,penalty,Tf);
+fprintf('\n-=- Total Cost via Augmented Cost Function -=-\n');
+fprintf('Cost with Penalty: %d \n', J(1));
+fprintf('Cost without Penalty: %d \n\n', J(2));
+
 
 figure(1)
 plot3(0,0,0)
@@ -112,7 +117,6 @@ ylim(2*[-d0,d0])
 zlim(2*[-d0,d0])
 
 figure(4)
-penalty = gamma(end)/2*(1-tanh((dist-d0)/rho(end)));
 plot(t,penalty)
 xlabel('Time')
 ylabel('Penalty')
