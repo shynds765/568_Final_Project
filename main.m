@@ -77,7 +77,7 @@ Z_ex = d0*Z_ex;
 % Distance from Reference Trajectory
 error = zeros(1,length(r_sc));
 for i = 1:length(error)
-    error(i) = norm(r_sc(i,:) - r_ref(i,:))*l_char;
+    error(i) = norm(r_sc(i,:) - r_ref(i,:));
 end
 
 % Calculating Total Cost from Cost Function Equation
@@ -91,19 +91,19 @@ fprintf('Cost without Penalty: %d \n\n', J(2));
 figure(1)
 plot3(0,0,0)
 hold on
-plot3(r_debris(:,1),r_debris(:,2),r_debris(:,3),'r-')
+plot3(r_debris(:,1)*l_char,r_debris(:,2)*l_char,r_debris(:,3)*l_char,'r-')
 hold on
-plot3(r_ref(:,1),r_ref(:,2),r_ref(:,3),'k--')
+plot3(r_ref(:,1)*l_char,r_ref(:,2)*l_char,r_ref(:,3)*l_char,'k--')
 hold on
-plot3(r_sc(:,1),r_sc(:,2),r_sc(:,3),'b-')
+plot3(r_sc(:,1)*l_char,r_sc(:,2)*l_char,r_sc(:,3)*l_char,'b-')
 axis equal
 grid on
-xlabel('x')
-ylabel('y')
-zlabel('z')
+xlabel('x (km)')
+ylabel('y (km)')
+zlabel('z (km)')
 
 figure(2)
-semilogy(t,dist,'k-')
+semilogy(t*t_char,dist*l_char,'k-')
 hold on
 grid on 
 xlabel('time [s]')
@@ -113,14 +113,18 @@ yline(d0,'r--')
 figure(3)
 plot3(0,0,0,'kx')
 hold on
-plot3(r_sc2debris(:,1),r_sc2debris(:,2),r_sc2debris(:,3),'r-')
+plot3(r_sc2debris(:,1)*l_char,r_sc2debris(:,2)*l_char,r_sc2debris(:,3)*l_char,'r-')
 hold on
-surf(X_ex,Y_ex,Z_ex,'FaceAlpha',0.3, 'FaceColor', 'b')
+surf(X_ex*l_char,Y_ex*l_char,Z_ex*l_char,'FaceAlpha',0.3, 'FaceColor', 'b')
 grid on
 axis equal
-xlim(2*[-d0,d0])
-ylim(2*[-d0,d0])
-zlim(2*[-d0,d0])
+xlim(2*[-d0,d0]*l_char)
+ylim(2*[-d0,d0]*l_char)
+zlim(2*[-d0,d0]*l_char)
+title('Debris Relative to Spacecraft')
+xlabel('x (km)')
+ylabel('y (km)')
+zlabel('z (km)')
 
 figure(4)
 plot(t,penalty)
@@ -128,29 +132,28 @@ xlabel('Time')
 ylabel('Penalty')
 
 % Optimal Control History
-t = t*t_char;
 figure(5)
 subplot(3,1,1)
-plot(t,u(1,:))
+plot(t*t_char,u(1,:))
 title("Optimal Control History")
 ylabel("x Acceleration [km/s^2]")
 xlabel("Time [s]")
 grid
 
 subplot(3,1,2)
-plot(t,u(2,:))
+plot(t*t_char,u(2,:))
 ylabel("y Acceleration [km/s^2]")
 xlabel("Time [s]")
 grid
 
 subplot(3,1,3)
-plot(t,u(3,:))
+plot(t*t_char,u(3,:))
 ylabel("z Acceleration [km/s^2]")
 xlabel("Time [s]")
 grid
 
 figure(6)
-plot(t,error)
+plot(t*t_char,error*l_char)
 title("Deviation from Reference Trajectory")
 ylabel("Distance from Reference Trajectory [km]")
 xlabel("Time [s]")
