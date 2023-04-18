@@ -25,14 +25,16 @@ x10 = [r_col; v1];
 x20 = [r_col; v2];
 
 opt = odeset("RelTol",1e-8,"AbsTol",1e-8);
-[~, x1] = ode45(@(t,x) TwoBodyEOM(t,x,mu_earth), linspace(0,-10000,70000), x10,opt);
-[~, x2] = ode45(@(t,x) TwoBodyEOM(t,x,mu_earth), linspace(0,-10000,70000), x20,opt);
+[~, x1] = ode45(@(t,x) TwoBodyEOM(t,x,mu_earth), linspace(0,-2000,70000), x10,opt);
+[~, x2] = ode45(@(t,x) TwoBodyEOM(t,x,mu_earth), linspace(0,-2000,70000), x20,opt);
 
 r1 = x1(:,1:3);
 r2 = x2(:,1:3);
 
 ic1 = x1(end,:);
 ic2 = x2(end,:);
+disp(ic1)
+disp(ic2)
 
 figure(1)
 plot3(r1(:,1),r1(:,2),r1(:,3))
